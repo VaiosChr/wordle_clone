@@ -1,5 +1,4 @@
-# list of words with 5 letters
-words = [
+List<String> words = [
   'rossa',
   'jetty',
   'wizzo',
@@ -14855,4 +14854,4 @@ words = [
   'fungs',
   'cadgy',
   'jalap'
-]
+];
