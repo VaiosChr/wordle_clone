@@ -1,6 +1,7 @@
 // 3792
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/include/classes.dart';
+import 'package:wordle_clone/include/keyboard.dart';
 
 class GamePage extends StatelessWidget {
   List<Word> words = [];
@@ -17,6 +18,7 @@ class GamePage extends StatelessWidget {
           WordView(),
           WordView(),
           WordView(),
+          KeyboardWidget(),
         ],
       ),
     );

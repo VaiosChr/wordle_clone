@@ -15,8 +15,8 @@ List<Color> colors = [
 ];
 
 class Letter {
-  String letter = "";
-  LetterStatus status = LetterStatus.white;
+  String letter = "A";
+  LetterStatus status = LetterStatus.green;
 }
 
 class LetterView extends StatelessWidget {
@@ -31,7 +31,6 @@ class LetterView extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width / 5 - 15,
         height: MediaQuery.of(context).size.width / 5 - 15,
-        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: colors[letter.status.index],
           borderRadius: BorderRadius.circular(8),
@@ -41,7 +40,7 @@ class LetterView extends StatelessWidget {
             letter.letter,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 32,
+              fontSize: 36,
               fontWeight: FontWeight.bold,
             ),
           ),
