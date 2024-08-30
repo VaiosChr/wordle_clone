@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:wordle_clone/include/keys.dart';
 
 class KeyWidget extends StatelessWidget {
-  final String value;
+  final Widget value;
+  final void Function() onTap;
+  final Color backgroundColor;
 
   const KeyWidget({
     super.key,
     required this.value,
+    required this.onTap,
+    required this.backgroundColor,
   });
 
   @override
@@ -14,51 +18,17 @@ class KeyWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: GestureDetector(
-        onTap: () {
-          // handle key press
-        },
+        onTap: onTap,
         child: Container(
           width: MediaQuery.of(context).size.width / 11 - 2,
           height: 50,
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 231, 231, 231),
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: Center(
-            child: Text(
-              value,
-              style: const TextStyle(fontSize: 24.0),
-            ),
+            child: value,
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class ActionKey extends StatelessWidget {
-  final Icon icon;
-  final void Function() onTap;
-
-  const ActionKey({
-    super.key,
-    required this.icon,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: MediaQuery.of(context).size.width / 11 - 2,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.blue[50],
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: Center(
-          child: icon,
         ),
       ),
     );
@@ -66,12 +36,15 @@ class ActionKey extends StatelessWidget {
 }
 
 class KeyboardWidget extends StatelessWidget {
-  final List<KeyWidget> keys = List<KeyWidget>.generate(26, (index) {
-    return KeyWidget(value: chars[index]);
-  });
+  final void Function(String) onLetterPress;
+  final void Function() onEnterPress;
+  final void Function() onBackspacePress;
 
-  KeyboardWidget({
+  const KeyboardWidget({
     super.key,
+    required this.onLetterPress,
+    required this.onEnterPress,
+    required this.onBackspacePress,
   });
 
   @override
@@ -82,26 +55,70 @@ class KeyboardWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            for (int i = 0; i < 10; i++) ...{keys[i]},
+            for (int i = 0; i < 10; i++) ...{
+              KeyWidget(
+                value: Text(
+                  chars[i],
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () {
+                  onLetterPress(chars[i]);
+                },
+                backgroundColor: const Color.fromARGB(255, 231, 231, 231),
+              ),
+            },
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            for (int i = 10; i < 19; i++) ...{keys[i]},
+            for (int i = 10; i < 19; i++) ...{
+              KeyWidget(
+                value: Text(
+                  chars[i],
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () {
+                  onLetterPress(chars[i]);
+                },
+                backgroundColor: const Color.fromARGB(255, 231, 231, 231),
+              ),
+            },
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ActionKey(
-              icon: const Icon(Icons.keyboard_return),
-              onTap: () {},
+            KeyWidget(
+              value: const Icon(Icons.keyboard_return),
+              onTap: onEnterPress,
+              backgroundColor: const Color.fromARGB(255, 227, 242, 253),
             ),
-            for (int i = 19; i < 26; i++) ...{keys[i]},
-            ActionKey(
-              icon: const Icon(Icons.backspace),
-              onTap: () {},
+            for (int i = 19; i < 26; i++) ...{
+              KeyWidget(
+                value: Text(
+                  chars[i],
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () {
+                  onLetterPress(chars[i]);
+                },
+                backgroundColor: const Color.fromARGB(255, 231, 231, 231),
+              ),
+            },
+            KeyWidget(
+              value: const Icon(Icons.backspace),
+              onTap: onBackspacePress,
+              backgroundColor: const Color.fromARGB(255, 227, 242, 253),
             ),
           ],
         ),
