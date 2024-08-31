@@ -10,7 +10,7 @@ enum LetterStatus {
 List<Color> colors = [
   Colors.white,
   Colors.grey,
-  const Color.fromARGB(255, 231, 215, 70),
+  const Color.fromARGB(255, 205, 191, 65),
   Colors.green,
 ];
 
@@ -31,7 +31,9 @@ class LetterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
         width: MediaQuery.of(context).size.width / 5 - 15,
         height: MediaQuery.of(context).size.width / 5 - 15,
         decoration: BoxDecoration(

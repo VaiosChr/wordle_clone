@@ -13,7 +13,8 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-  final String _wordToGuess = words[Random().nextInt(words.length)];
+  final String _wordToGuess =
+      words[Random().nextInt(words.length)].toUpperCase();
   String _currentGuess = "";
   int _row = 0;
   int _col = 0;
@@ -32,12 +33,9 @@ class _GamePageState extends State<GamePage> {
     return Center(
       child: Column(
         children: [
-          WordView(word: _words[0]),
-          WordView(word: _words[1]),
-          WordView(word: _words[2]),
-          WordView(word: _words[3]),
-          WordView(word: _words[4]),
-          WordView(word: _words[5]),
+          for (int i = 0; i < _words.length; i++) ...{
+            WordView(word: _words[i]),
+          },
           const Spacer(),
           KeyboardWidget(
             onLetterPress: onLetterPress,
