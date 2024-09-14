@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
-
-enum LetterStatus {
-  white,
-  grey,
-  yellow,
-  green,
-}
-
-List<Color> colors = [
-  Colors.white,
-  Colors.grey,
-  const Color.fromARGB(255, 205, 191, 65),
-  Colors.green,
-];
+import 'package:wordle_clone/include/helpers.dart';
 
 class Letter {
   String letter = "";

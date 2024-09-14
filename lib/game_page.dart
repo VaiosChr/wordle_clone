@@ -1,9 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/include/classes.dart';
 import 'package:wordle_clone/include/keyboard.dart';
+import 'package:wordle_clone/include/keys.dart';
 import 'package:wordle_clone/include/words.dart';
+import 'package:wordle_clone/include/helpers.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -13,20 +13,41 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-  final String _wordToGuess =
-      words[Random().nextInt(words.length)].toUpperCase();
   String _currentGuess = "";
-  int _row = 0;
-  int _col = 0;
+  int _row = 0, _col = 0;
 
-  final List<Word> _words = [
-    Word(letters: [Letter(), Letter(), Letter(), Letter(), Letter()]),
-    Word(letters: [Letter(), Letter(), Letter(), Letter(), Letter()]),
-    Word(letters: [Letter(), Letter(), Letter(), Letter(), Letter()]),
-    Word(letters: [Letter(), Letter(), Letter(), Letter(), Letter()]),
-    Word(letters: [Letter(), Letter(), Letter(), Letter(), Letter()]),
-    Word(letters: [Letter(), Letter(), Letter(), Letter(), Letter()]),
-  ];
+  final String _wordToGuess = getWordOftheDay();
+
+  final List<Word> _words = List.generate(
+    6,
+    (index) => Word(
+      letters: List.generate(
+        5,
+        (index) => Letter(),
+      ),
+    ),
+  );
+
+  final Keyboard keyboard = Keyboard(
+    keys: List.generate(
+      26,
+      (index) => KeyboardKey(
+        value: Text(
+          chars[index],
+          style: const TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ),
+  );
+
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +58,8 @@ class _GamePageState extends State<GamePage> {
             WordView(word: _words[i]),
           },
           const Spacer(),
-          KeyboardWidget(
+          KeyboardView(
+            keyboard: keyboard,
             onLetterPress: onLetterPress,
             onEnterPress: onEnterPress,
             onBackspacePress: onBackspacePress,
@@ -92,21 +114,12 @@ class _GamePageState extends State<GamePage> {
   }
 
   void checkGuess() {
-    List<int> correctLetters = [];
-    List<int> semiCorrectLetters = [];
-
-    for (int i = 0; i < _wordToGuess.length; i++) {
-      int index = _wordToGuess.indexOf(_currentGuess[i]);
-      if (index != -1) {
-        if (index != i) {
-          semiCorrectLetters.add(i);
-        } else {
-          correctLetters.add(index);
-        }
-      }
-    }
+    List<List<int>> result = findMatchingIndices(_wordToGuess, _currentGuess);
+    List<int> correctLetters = result[0];
+    List<int> semiCorrectLetters = result[1];
 
     _words[_row].updateLetters(correctLetters, semiCorrectLetters);
+    keyboard.updateKeyColors(correctLetters, semiCorrectLetters, _currentGuess);
 
     if (_currentGuess == _wordToGuess) {
       ScaffoldMessenger.of(context).showSnackBar(
