@@ -43,29 +43,31 @@ class _GamePageState extends State<GamePage> {
     ),
   );
 
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  // }
-
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          for (int i = 0; i < _words.length; i++) ...{
-            WordView(word: _words[i]),
-          },
-          const Spacer(),
-          KeyboardView(
-            keyboard: keyboard,
-            onLetterPress: onLetterPress,
-            onEnterPress: onEnterPress,
-            onBackspacePress: onBackspacePress,
-          ),
-          const SizedBox(height: 50),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Wordle Clone',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            for (int i = 0; i < _words.length; i++) ...{
+              WordView(word: _words[i]),
+            },
+            const Spacer(),
+            KeyboardView(
+              keyboard: keyboard,
+              onLetterPress: onLetterPress,
+              onEnterPress: onEnterPress,
+              onBackspacePress: onBackspacePress,
+            ),
+            const SizedBox(height: 50),
+          ],
+        ),
       ),
     );
   }
