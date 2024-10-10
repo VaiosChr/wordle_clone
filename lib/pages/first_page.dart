@@ -34,12 +34,9 @@ class FirstPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   'Welcome back!',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -67,7 +64,7 @@ class FirstPage extends StatelessWidget {
                     ),
                     IconButton(
                       icon: const Icon(
-                        Icons.settings,
+                        Icons.settings_outlined,
                         size: 40,
                         color: Colors.grey,
                       ),
