@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wordle_clone/classes/statistics.dart';
 import 'package:wordle_clone/include/bar_chart.dart';
 import 'package:wordle_clone/include/countdown_clock.dart';
 
@@ -10,11 +14,31 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
-  final int wins = 120, losses = 40;
-  final List<int> totalGuesses = [0, 0, 3, 11, 37, 69, 40];
+  Statistics _statistics = Statistics();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStatistics();
+  }
+
+  Future<void> _loadStatistics() async {
+    final prefs = await SharedPreferences.getInstance();
+    final statsJson = prefs.getString('statistics');
+
+    setState(() {
+      if (statsJson != null) {
+        _statistics = Statistics.fromJson(json.decode(statsJson));
+      } else {
+        _statistics = Statistics();
+      }
+    });
+  }
 
   Widget _winGauge() {
-    final winRate = wins / (wins + losses);
+    final int wins = _statistics.totalWins;
+    final int totalGames = _statistics.totalGames;
+    final double winRate = totalGames == 0 ? 0 : wins / totalGames;
 
     return Column(
       children: [
@@ -22,7 +46,7 @@ class _StatsPageState extends State<StatsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Wins: $wins"),
-            Text("Losses: $losses"),
+            Text("Losses: ${totalGames - wins}"),
           ],
         ),
         const SizedBox(height: 4),
@@ -61,7 +85,7 @@ class _StatsPageState extends State<StatsPage> {
               child: Column(
                 children: [
                   Text(
-                    '${wins + losses}',
+                    '${_statistics.totalGames}',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const Text('Games Played'),
@@ -84,7 +108,7 @@ class _StatsPageState extends State<StatsPage> {
               child: Column(
                 children: [
                   Text(
-                    '${(100 * wins / (wins + losses)).toStringAsFixed(1)} %',
+                    '${(100 * _statistics.totalWins / _statistics.totalGames).toStringAsFixed(1)} %',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const Text('Win Rate'),
@@ -113,7 +137,7 @@ class _StatsPageState extends State<StatsPage> {
               child: Column(
                 children: [
                   Text(
-                    '5',
+                    _statistics.currentStreak.toString(),
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const Text('Current Streak'),
@@ -136,7 +160,7 @@ class _StatsPageState extends State<StatsPage> {
               child: Column(
                 children: [
                   Text(
-                    '28',
+                    _statistics.maxStreak.toString(),
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const Text('Max Streak'),
@@ -151,7 +175,7 @@ class _StatsPageState extends State<StatsPage> {
 
   Widget _buildGuessDistribution() {
     return MyBarChart(
-      totalGuesses: totalGuesses,
+      distribution: _statistics.guessDistribution,
     );
   }
 

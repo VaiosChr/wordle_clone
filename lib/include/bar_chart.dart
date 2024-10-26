@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class MyBarChart extends StatelessWidget {
-  final List<int> totalGuesses;
+  final Map<int, int> distribution;
 
-  const MyBarChart({super.key, required this.totalGuesses});
+  const MyBarChart({super.key, required this.distribution});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,8 @@ class MyBarChart extends StatelessWidget {
             tooltipMargin: 8,
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               return BarTooltipItem(
-                '${totalGuesses[group.x.toInt()]}',
+                '${distribution[group.x + 1] ?? 0}',
+                // '${totalGuesses[group.x.toInt()]}',
                 const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -43,7 +44,7 @@ class MyBarChart extends StatelessWidget {
             },
           ),
         ),
-        maxY: totalGuesses
+        maxY: distribution.values
             .reduce((curr, next) => curr > next ? curr : next)
             .toDouble(),
         minY: 0,
@@ -53,23 +54,22 @@ class MyBarChart extends StatelessWidget {
   }
 
   List<BarChartGroupData> _generateBarGroups() {
-    return totalGuesses.asMap().entries.map(
-      (entry) {
-        int index = entry.key;
-        int value = entry.value;
-        return BarChartGroupData(
-          x: index,
-          barRods: [
-            BarChartRodData(
-              toY: value.toDouble(),
-              width: 20,
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ],
-        );
-      },
-    ).toList();
+    return List.generate(7, (index) {
+      // index + 1 represents the guess number (1-6) and 7 represents fail
+      int value =
+          index < 6 ? (distribution[index + 1] ?? 0) : (distribution[0] ?? 0);
+      return BarChartGroupData(
+        x: index,
+        barRods: [
+          BarChartRodData(
+            toY: value.toDouble(),
+            width: 20,
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ],
+      );
+    });
   }
 
   Widget getBottomTitles(double value, TitleMeta meta) {

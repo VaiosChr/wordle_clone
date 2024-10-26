@@ -24,6 +24,13 @@ String getWordOftheDay() {
   return words[random.nextInt(words.length)].toUpperCase();
 }
 
+int dateToInt(DateTime date) {
+  final utcDate = date.toUtc();
+  final epoch = DateTime.utc(1970, 1, 1);
+
+  return utcDate.difference(epoch).inDays;
+}
+
 List<List<int>> findMatchingIndices(String wordToGuess, String currentGuess) {
   List<int> correctLetters = [];
   List<int> semiCorrectLetters = [];
