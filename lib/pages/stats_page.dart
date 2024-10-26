@@ -21,8 +21,8 @@ class _StatsPageState extends State<StatsPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Wins $wins%"),
-            Text("Losses $losses%"),
+            Text("Wins: $wins"),
+            Text("Losses: $losses"),
           ],
         ),
         const SizedBox(height: 4),
@@ -30,7 +30,7 @@ class _StatsPageState extends State<StatsPage> {
           borderRadius: BorderRadius.circular(8),
           child: LinearProgressIndicator(
             value: winRate,
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.grey[350],
             valueColor: const AlwaysStoppedAnimation(Colors.green),
             minHeight: 16,
           ),
@@ -64,7 +64,7 @@ class _StatsPageState extends State<StatsPage> {
                     '${wins + losses}',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
-                  const Text('Played'),
+                  const Text('Games Played'),
                 ],
               ),
             ),
@@ -84,10 +84,10 @@ class _StatsPageState extends State<StatsPage> {
               child: Column(
                 children: [
                   Text(
-                    (100 * wins / (wins + losses)).toStringAsFixed(1),
+                    '${(100 * wins / (wins + losses)).toStringAsFixed(1)} %',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
-                  const Text('Wins %'),
+                  const Text('Win Rate'),
                 ],
               ),
             ),
@@ -113,7 +113,7 @@ class _StatsPageState extends State<StatsPage> {
               child: Column(
                 children: [
                   Text(
-                    '$wins',
+                    '5',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const Text('Current Streak'),
@@ -136,7 +136,7 @@ class _StatsPageState extends State<StatsPage> {
               child: Column(
                 children: [
                   Text(
-                    '$wins',
+                    '28',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const Text('Max Streak'),
@@ -159,45 +159,48 @@ class _StatsPageState extends State<StatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: Text(
           'Statistics',
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Text(
-              "GAME PERFORMANCE",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 20),
-            _buildGamePerformanceStats(),
-            const SizedBox(height: 20),
-            _winGauge(),
-            const SizedBox(height: 20),
-            const Divider(),
-            const SizedBox(height: 20),
-            Text(
-              "GUESS DISTRIBUTION",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 250,
-              child: _buildGuessDistribution(),
-            ),
-            const SizedBox(height: 20),
-            const Divider(),
-            const SizedBox(height: 20),
-            Text(
-              "NEXT WORDLE",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 20),
-            const MidnightCountdown(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Text(
+                "GAME PERFORMANCE",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 20),
+              _buildGamePerformanceStats(),
+              const SizedBox(height: 20),
+              _winGauge(),
+              const SizedBox(height: 20),
+              const Divider(),
+              const SizedBox(height: 20),
+              Text(
+                "GUESS DISTRIBUTION",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 250,
+                child: _buildGuessDistribution(),
+              ),
+              const SizedBox(height: 20),
+              const Divider(),
+              const SizedBox(height: 20),
+              Text(
+                "NEXT WORDLE",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 20),
+              const MidnightCountdown(),
+            ],
+          ),
         ),
       ),
     );

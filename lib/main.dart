@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/pages/first_page.dart';
 import 'package:wordle_clone/pages/game_page.dart';
+import 'package:wordle_clone/pages/help_page.dart';
 import 'package:wordle_clone/pages/settings_page.dart';
 import 'package:wordle_clone/pages/stats_page.dart';
 
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/game_page': (context) => const GamePage(),
         '/stats_page': (context) => const StatsPage(),
         '/settings_page': (context) => const SettingsPage(),
+        '/help_page': (context) => const HelpPage(),
       },
     );
   }
@@ -37,12 +39,12 @@ ThemeData lightTheme = ThemeData(
       color: Color.fromARGB(255, 126, 126, 126),
     ),
     bodyLarge: TextStyle(
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: FontWeight.w600,
       color: Color.fromARGB(255, 0, 0, 0),
     ),
     bodyMedium: TextStyle(
-      fontSize: 14,
+      fontSize: 15,
       fontWeight: FontWeight.normal,
       color: Color.fromARGB(153, 0, 0, 0),
     ),
@@ -65,11 +67,11 @@ ThemeData lightTheme = ThemeData(
       color: Color.fromARGB(255, 126, 126, 126),
     ),
   ),
-  scaffoldBackgroundColor: const Color.fromARGB(255, 247, 245, 249),
+  // scaffoldBackgroundColor: const Color.fromARGB(255, , 248, 253),
   brightness: Brightness.light,
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.deepPurple,
-    primary: Colors.deepPurple,
+    seedColor: Colors.blue,
+    primary: Colors.green,
   ),
 );

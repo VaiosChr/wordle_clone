@@ -59,7 +59,7 @@ class _MidnightCountdownState extends State<MidnightCountdown> {
       child: Text(
         _formatDuration(_timeUntilMidnight),
         style: const TextStyle(
-          fontSize: 36,
+          fontSize: 32,
           color: Colors.green,
           fontWeight: FontWeight.bold,
           fontFamily: 'monospace',

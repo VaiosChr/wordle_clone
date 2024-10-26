@@ -12,7 +12,7 @@ enum LetterStatus {
 List<Color> colors = [
   Colors.white,
   Colors.grey,
-  const Color.fromARGB(255, 205, 191, 65),
+  Colors.yellow,
   Colors.green,
 ];
 

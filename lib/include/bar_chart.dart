@@ -23,7 +23,24 @@ class MyBarChart extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: getBottomTitles,
+              reservedSize: 30,
             ),
+          ),
+        ),
+        barTouchData: BarTouchData(
+          touchTooltipData: BarTouchTooltipData(
+            tooltipRoundedRadius: 8,
+            tooltipMargin: 8,
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              return BarTooltipItem(
+                '${totalGuesses[group.x.toInt()]}',
+                const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              );
+            },
           ),
         ),
         maxY: totalGuesses
@@ -65,7 +82,7 @@ class MyBarChart extends StatelessWidget {
     return SideTitleWidget(
       axisSide: meta.axisSide,
       child: Text(
-        (value == 6 ? "fail" : (value + 1)).toString(),
+        (value == 6 ? "fail" : (value + 1).toInt()).toString(),
         style: style,
       ),
     );

@@ -11,6 +11,18 @@ class SettingsPage extends StatelessWidget {
           'Settings',
           style: Theme.of(context).textTheme.titleLarge,
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.help_outline,
+              size: 28,
+              color: Colors.grey,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/help_page');
+            },
+          ),
+        ],
       ),
       body: const Center(
         child: Text('Settings'),

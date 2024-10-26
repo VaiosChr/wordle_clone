@@ -47,6 +47,7 @@ class _GamePageState extends State<GamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: Text(
           'Wordle Clone',
           style: Theme.of(context).textTheme.titleLarge,
@@ -65,7 +66,7 @@ class _GamePageState extends State<GamePage> {
               onEnterPress: onEnterPress,
               onBackspacePress: onBackspacePress,
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 25),
           ],
         ),
       ),

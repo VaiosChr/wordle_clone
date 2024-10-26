@@ -17,7 +17,8 @@ class LetterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      // padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.all(4),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
@@ -26,9 +27,8 @@ class LetterView extends StatelessWidget {
         decoration: BoxDecoration(
           color: colors[letter.status.index],
           border: letter.status == LetterStatus.white
-              ? Border.all(color: Colors.grey, width: 0.8)
+              ? Border.all(color: Colors.grey, width: 0.3)
               : null,
-          borderRadius: BorderRadius.circular(5),
         ),
         child: Center(
           child: Text(
@@ -75,7 +75,7 @@ class WordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       children:
           word.letters.map((letter) => LetterView(letter: letter)).toList(),
     );
