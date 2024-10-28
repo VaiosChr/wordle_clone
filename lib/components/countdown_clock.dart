@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wordle_clone/components/custom_container.dart';
 
 class MidnightCountdown extends StatefulWidget {
   const MidnightCountdown({super.key});
@@ -15,7 +16,7 @@ class _MidnightCountdownState extends State<MidnightCountdown> {
   void initState() {
     super.initState();
     _updateMidnight();
-    // Update every second
+
     Stream.periodic(const Duration(seconds: 1)).listen((_) {
       _updateMidnight();
     });
@@ -23,7 +24,7 @@ class _MidnightCountdownState extends State<MidnightCountdown> {
 
   void _updateMidnight() {
     final now = DateTime.now();
-    // Calculate next midnight
+
     _midnight = DateTime(now.year, now.month, now.day + 1);
     _timeUntilMidnight = _midnight.difference(now);
 
@@ -44,18 +45,7 @@ class _MidnightCountdownState extends State<MidnightCountdown> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Theme.of(context).dialogBackgroundColor,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 20,
-            color: Theme.of(context).hoverColor.withOpacity(0.1),
-          )
-        ],
-      ),
+    return CustomContainer(
       child: Text(
         _formatDuration(_timeUntilMidnight),
         style: const TextStyle(

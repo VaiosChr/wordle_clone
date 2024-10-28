@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/include/helpers.dart';
+import 'package:wordle_clone/main.dart';
 
 class Letter {
   String letter = "";
-  LetterStatus status = LetterStatus.white;
+  LetterStatus status = LetterStatus.empty;
 }
 
 class LetterView extends StatelessWidget {
@@ -16,8 +17,9 @@ class LetterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = MyApp.themeNotifier.value == ThemeMode.dark;
+
     return Padding(
-      // padding: const EdgeInsets.symmetric(vertical: 4.0),
       padding: const EdgeInsets.all(4),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
@@ -25,8 +27,10 @@ class LetterView extends StatelessWidget {
         width: MediaQuery.of(context).size.width / 5 - 15,
         height: MediaQuery.of(context).size.width / 5 - 15,
         decoration: BoxDecoration(
-          color: colors[letter.status.index],
-          border: letter.status == LetterStatus.white
+          color: isDarkMode
+              ? darkColors[letter.status.index]
+              : colors[letter.status.index],
+          border: letter.status == LetterStatus.empty
               ? Border.all(color: Colors.grey, width: 0.3)
               : null,
         ),
@@ -34,9 +38,9 @@ class LetterView extends StatelessWidget {
           child: Text(
             letter.letter,
             style: TextStyle(
-              color: letter.status == LetterStatus.white
-                  ? Colors.black
-                  : Colors.white,
+              color: letter.status != LetterStatus.empty || isDarkMode
+                  ? Colors.white
+                  : Colors.black,
               fontSize: 36,
               fontWeight: FontWeight.bold,
             ),

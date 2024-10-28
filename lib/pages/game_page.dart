@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wordle_clone/classes/statistics.dart';
 import 'package:wordle_clone/classes/word_letter.dart';
-import 'package:wordle_clone/include/countdown_clock.dart';
-import 'package:wordle_clone/include/keyboard.dart';
+import 'package:wordle_clone/components/countdown_clock.dart';
+import 'package:wordle_clone/classes/keyboard.dart';
 import 'package:wordle_clone/include/keys.dart';
 import 'package:wordle_clone/include/words.dart';
 import 'package:wordle_clone/include/helpers.dart';
@@ -63,9 +63,8 @@ class _GamePageState extends State<GamePage> {
 
     final today = dateToInt(DateTime.now());
 
-    setState(() {
-      _gamePlayable = lastPlayedDate == null || lastPlayedDate != today;
-    });
+    _gamePlayable = lastPlayedDate == null || lastPlayedDate != today;
+    _gamePlayable = true;
   }
 
   Future<void> _saveGamePlayableState() async {
@@ -166,7 +165,7 @@ class _GamePageState extends State<GamePage> {
 
     setState(() {
       _row++;
-      if (_row == 6) {
+      if (_row == 5) {
         _gamePlayable = false;
         _saveGamePlayableState();
       }

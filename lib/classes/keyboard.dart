@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/include/helpers.dart';
 import 'package:wordle_clone/include/keys.dart';
+import 'package:wordle_clone/main.dart';
 
 class KeyboardKey {
   Widget value = const Text("");
-  LetterStatus status = LetterStatus.white;
+  LetterStatus status = LetterStatus.empty;
 
   KeyboardKey({
     required this.value,
-    this.status = LetterStatus.white,
+    this.status = LetterStatus.empty,
   });
 }
 
@@ -24,16 +25,27 @@ class KeyboardKeyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = MyApp.themeNotifier.value == ThemeMode.dark;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           width: MediaQuery.of(context).size.width / 11 - 2,
+          // padding: const EdgeInsets.symmetric(horizontal: 12),
           height: 50,
           decoration: BoxDecoration(
-            color: colors[keyboardKey.status.index],
+            color: isDarkMode
+                ? darkColors[keyboardKey.status.index]
+                : colors[keyboardKey.status.index],
             borderRadius: BorderRadius.circular(5.0),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 20,
+                color: Theme.of(context).hoverColor.withOpacity(0.1),
+              ),
+            ],
           ),
           child: Center(
             child: keyboardKey.value,
@@ -120,8 +132,11 @@ class KeyboardView extends StatelessWidget {
           children: [
             KeyboardKeyView(
               keyboardKey: KeyboardKey(
-                value: const Icon(Icons.keyboard_return),
-                status: LetterStatus.white,
+                value: Icon(
+                  Icons.keyboard_return,
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                ),
+                status: LetterStatus.empty,
               ),
               onTap: onEnterPress,
             ),
@@ -135,8 +150,11 @@ class KeyboardView extends StatelessWidget {
             },
             KeyboardKeyView(
               keyboardKey: KeyboardKey(
-                value: const Icon(Icons.backspace),
-                status: LetterStatus.white,
+                value: Icon(
+                  Icons.backspace,
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                ),
+                status: LetterStatus.empty,
               ),
               onTap: onBackspacePress,
             ),

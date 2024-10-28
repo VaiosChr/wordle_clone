@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wordle_clone/include/words.dart';
 
 enum LetterStatus {
-  white,
+  empty,
   grey,
   yellow,
   green,
@@ -11,6 +11,13 @@ enum LetterStatus {
 
 List<Color> colors = [
   Colors.white,
+  Colors.grey,
+  Colors.yellow,
+  Colors.green,
+];
+
+List<Color> darkColors = [
+  Colors.black,
   Colors.grey,
   Colors.yellow,
   Colors.green,
