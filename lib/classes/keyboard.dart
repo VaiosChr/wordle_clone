@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/include/helpers.dart';
 import 'package:wordle_clone/include/keys.dart';
+import 'package:wordle_clone/main.dart';
 
 class KeyboardKey {
   Widget value = const Text("");
-  LetterStatus status = LetterStatus.white;
+  LetterStatus status = LetterStatus.empty;
 
   KeyboardKey({
     required this.value,
-    this.status = LetterStatus.white,
+    this.status = LetterStatus.empty,
   });
 }
 
@@ -24,16 +25,27 @@ class KeyboardKeyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = MyApp.themeNotifier.value == ThemeMode.dark;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           width: MediaQuery.of(context).size.width / 11 - 2,
+          // padding: const EdgeInsets.symmetric(horizontal: 12),
           height: 50,
           decoration: BoxDecoration(
-            color: colors[keyboardKey.status.index],
+            color: isDarkMode
+                ? darkColors[keyboardKey.status.index]
+                : colors[keyboardKey.status.index],
             borderRadius: BorderRadius.circular(5.0),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 20,
+                color: Theme.of(context).hoverColor.withOpacity(0.1),
+              ),
+            ],
           ),
           child: Center(
             child: keyboardKey.value,
@@ -120,8 +132,11 @@ class KeyboardView extends StatelessWidget {
           children: [
             KeyboardKeyView(
               keyboardKey: KeyboardKey(
-                value: const Icon(Icons.keyboard_return),
-                status: LetterStatus.white,
+                value: Icon(
+                  Icons.keyboard_return,
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                ),
+                status: LetterStatus.empty,
               ),
               onTap: onEnterPress,
             ),
@@ -135,8 +150,11 @@ class KeyboardView extends StatelessWidget {
             },
             KeyboardKeyView(
               keyboardKey: KeyboardKey(
-                value: const Icon(Icons.backspace),
-                status: LetterStatus.white,
+                value: Icon(
+                  Icons.backspace,
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                ),
+                status: LetterStatus.empty,
               ),
               onTap: onBackspacePress,
             ),
@@ -146,103 +164,3 @@ class KeyboardView extends StatelessWidget {
     );
   }
 }
-
-// class KeyboardWidget extends StatefulWidget {
-//   final void Function(String) onLetterPress;
-//   final void Function() onEnterPress;
-//   final void Function() onBackspacePress;
-
-//   KeyboardWidget({
-//     super.key,
-//     required this.onLetterPress,
-//     required this.onEnterPress,
-//     required this.onBackspacePress,
-//   });
-
-//   @override
-//   State<KeyboardWidget> createState() => _KeyboardWidgetState();
-// }
-
-// class _KeyboardWidgetState extends State<KeyboardWidget> {
-//   final List<KeyWidget> _keys = [];
-
-//   void _buildKeys() {
-//     _keys.clear();
-//     for (int i = 0; i < chars.length; i++) {
-//       _keys.add(
-//         KeyWidget(
-//           value: Text(
-//             chars[i],
-//             style: const TextStyle(
-//               fontSize: 20.0,
-//               fontWeight: FontWeight.bold,
-//             ),
-//           ),
-//           onTap: () {
-//             widget.onLetterPress(chars[i]);
-//           },
-//           backgroundColor: const Color.fromARGB(255, 231, 231, 231),
-//         ),
-//       );
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.center,
-//       children: [
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//           children: [
-//             for (int i = 0; i < 10; i++) ...{
-//               _keys[i],
-//             },
-//           ],
-//         ),
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//           children: [
-//             for (int i = 10; i < 19; i++) ...{
-//               _keys[i],
-//             },
-//           ],
-//         ),
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//           children: [
-//             KeyWidget(
-//               value: const Icon(Icons.keyboard_return),
-//               onTap: widget.onEnterPress,
-//               backgroundColor: const Color.fromARGB(255, 227, 242, 253),
-//             ),
-//             for (int i = 19; i < 26; i++) ...{
-//               _keys[i],
-//             },
-//             KeyWidget(
-//               value: const Icon(Icons.backspace),
-//               onTap: widget.onBackspacePress,
-//               backgroundColor: const Color.fromARGB(255, 227, 242, 253),
-//             ),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-
-//   void updateKeyColors(
-//       List<int> correctLetters, List<int> semiCorrectLetters, String guess) {
-//     setState(() {
-//       for (int i = 0; i < guess.length; i++) {
-//         if (correctLetters.contains(i)) {
-//           _keys[chars.indexOf(guess[i])].backgroundColor = colors[3];
-//         } else if (semiCorrectLetters.contains(i)) {
-//           _keys[chars.indexOf(guess[i])].backgroundColor = colors[2];
-//         } else {
-//           _keys[chars.indexOf(guess[i])].backgroundColor = colors[1];
-//         }
-//       }
-//       _buildKeys();
-//     });
-//   }
-// }

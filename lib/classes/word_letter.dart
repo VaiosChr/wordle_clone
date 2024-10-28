@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/include/helpers.dart';
+import 'package:wordle_clone/main.dart';
 
 class Letter {
   String letter = "";
-  LetterStatus status = LetterStatus.white;
+  LetterStatus status = LetterStatus.empty;
 }
 
 class LetterView extends StatelessWidget {
@@ -16,27 +17,30 @@ class LetterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = MyApp.themeNotifier.value == ThemeMode.dark;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.all(4),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
         width: MediaQuery.of(context).size.width / 5 - 15,
         height: MediaQuery.of(context).size.width / 5 - 15,
         decoration: BoxDecoration(
-          color: colors[letter.status.index],
-          border: letter.status == LetterStatus.white
-              ? Border.all(color: Colors.grey, width: 0.8)
+          color: isDarkMode
+              ? darkColors[letter.status.index]
+              : colors[letter.status.index],
+          border: letter.status == LetterStatus.empty
+              ? Border.all(color: Colors.grey, width: 0.3)
               : null,
-          borderRadius: BorderRadius.circular(5),
         ),
         child: Center(
           child: Text(
             letter.letter,
             style: TextStyle(
-              color: letter.status == LetterStatus.white
-                  ? Colors.black
-                  : Colors.white,
+              color: letter.status != LetterStatus.empty || isDarkMode
+                  ? Colors.white
+                  : Colors.black,
               fontSize: 36,
               fontWeight: FontWeight.bold,
             ),
@@ -75,7 +79,7 @@ class WordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       children:
           word.letters.map((letter) => LetterView(letter: letter)).toList(),
     );

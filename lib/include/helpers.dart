@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wordle_clone/include/words.dart';
 
 enum LetterStatus {
-  white,
+  empty,
   grey,
   yellow,
   green,
@@ -12,7 +12,14 @@ enum LetterStatus {
 List<Color> colors = [
   Colors.white,
   Colors.grey,
-  const Color.fromARGB(255, 205, 191, 65),
+  Colors.yellow,
+  Colors.green,
+];
+
+List<Color> darkColors = [
+  Colors.black,
+  Colors.grey,
+  Colors.yellow,
   Colors.green,
 ];
 
@@ -22,6 +29,13 @@ String getWordOftheDay() {
   final random = Random(seed);
 
   return words[random.nextInt(words.length)].toUpperCase();
+}
+
+int dateToInt(DateTime date) {
+  final utcDate = date.toUtc();
+  final epoch = DateTime.utc(1970, 1, 1);
+
+  return utcDate.difference(epoch).inDays;
 }
 
 List<List<int>> findMatchingIndices(String wordToGuess, String currentGuess) {
