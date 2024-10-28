@@ -55,6 +55,7 @@ class _GamePageState extends State<GamePage> {
     super.initState();
     _checkIfPlayable();
     _loadStatistics();
+    _loadGameState();
   }
 
   Future<void> _checkIfPlayable() async {
@@ -90,6 +91,67 @@ class _GamePageState extends State<GamePage> {
     await prefs.setString('statistics', json.encode(_statistics.toJson()));
   }
 
+  Future<void> _loadGameState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final today = dateToInt(DateTime.now());
+    final gameStateJson = prefs.getString('gameState_$today');
+
+    if (gameStateJson != null) {
+      final gameState = json.decode(gameStateJson);
+
+      setState(() {
+        _row = gameState['row'];
+        _col = gameState['col'];
+        _currentGuess = gameState['currentGuess'];
+
+        final wordsList = gameState['words'] as List;
+        for (var i = 0; i < wordsList.length; i++) {
+          final lettersList = (wordsList[i]['letters'] as List);
+          for (var j = 0; j < lettersList.length; j++) {
+            _words[i].letters[j].letter = lettersList[j]['letter'];
+            _words[i].letters[j].status =
+                LetterStatus.values[lettersList[j]['status']];
+          }
+        }
+
+        final keyboardList = gameState['keyboard'] as List;
+        for (var i = 0; i < keyboardList.length; i++) {
+          final statusValue = keyboardList[i]['status'];
+          keyboard.keys[i].status = LetterStatus.values[statusValue];
+        }
+      });
+    }
+  }
+
+  Future<void> _saveGameState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final gameState = {
+      'row': _row,
+      'col': _col,
+      'currentGuess': _currentGuess,
+      'words': _words
+          .map((word) => {
+                'letters': word.letters
+                    .map((letter) => {
+                          'letter': letter.letter,
+                          'status': letter.status.index,
+                        })
+                    .toList(),
+              })
+          .toList(),
+      'keyboard': keyboard.keys
+          .map((key) => {
+                'status': key.status.index,
+              })
+          .toList(),
+    };
+
+    await prefs.setString(
+      'gameState_${dateToInt(DateTime.now())}',
+      json.encode(gameState),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,37 +162,35 @@ class _GamePageState extends State<GamePage> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: _gamePlayable
-          ? Center(
-              child: Column(
-                children: [
-                  for (int i = 0; i < _words.length; i++) ...{
-                    WordView(word: _words[i]),
-                  },
-                  const Spacer(),
-                  KeyboardView(
+      body: Center(
+        child: Column(
+          children: [
+            for (int i = 0; i < _words.length; i++) ...{
+              WordView(word: _words[i]),
+            },
+            const Spacer(),
+            _gamePlayable
+                ? KeyboardView(
                     keyboard: keyboard,
                     onLetterPress: onLetterPress,
                     onEnterPress: onEnterPress,
                     onBackspacePress: onBackspacePress,
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "NEXT WORDLE",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 20),
+                      const MidnightCountdown(),
+                    ],
                   ),
-                  const SizedBox(height: 25),
-                ],
-              ),
-            )
-          : Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "NEXT WORDLE",
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 20),
-                  const MidnightCountdown(),
-                ],
-              ),
-            ),
+            const SizedBox(height: 25),
+          ],
+        ),
+      ),
     );
   }
 
@@ -165,13 +225,15 @@ class _GamePageState extends State<GamePage> {
 
     setState(() {
       _row++;
-      if (_row == 5) {
+      if (_row == 6) {
         _gamePlayable = false;
         _saveGamePlayableState();
       }
       _currentGuess = "";
       _col = 0;
     });
+
+    _saveGameState();
   }
 
   Future<void> checkGuess() async {
