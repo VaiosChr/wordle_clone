@@ -65,7 +65,6 @@ class _GamePageState extends State<GamePage> {
     final today = dateToInt(DateTime.now());
 
     _gamePlayable = lastPlayedDate == null || lastPlayedDate != today;
-    _gamePlayable = true;
   }
 
   Future<void> _saveGamePlayableState() async {
@@ -187,7 +186,7 @@ class _GamePageState extends State<GamePage> {
                       const MidnightCountdown(),
                     ],
                   ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -249,6 +248,9 @@ class _GamePageState extends State<GamePage> {
     if (won) {
       _statistics.addGame(won: true, numGuesses: _row + 1);
       await _saveStatistics();
+
+      _gamePlayable = false;
+      _saveGamePlayableState();
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

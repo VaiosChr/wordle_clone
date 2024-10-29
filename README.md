@@ -1,16 +1,22 @@
-# wordle_clone
+# Wordle Clone
 
-A new Flutter project.
+A clone of the popular wordle game, made with Flutter. Test your vocabulary and deduction skills by trying to guess a five-letter word in six attempts or less.
 
-## Getting Started
+## ✨ Features
+* Daily word challenges
+* Visual feedback with colo-coded tiles:
+  - 🟩 Green: Letter is correct and in the right position
+  - 🟨 Yellow: Letter is in the word but in the wrong position
+  - ⬜ Gray: Letter is not in the word
+* Local statistics tracking
 
-This project is a starting point for a Flutter application.
+## 🎯 How to Play
 
-A few resources to get you started if this is your first Flutter project:
+1. You have six attempts to guess the five-letter word
+2. Type your guess and press Enter
+3. After each guess, the tiles will change color
+4. Keep guessing until you find the word or run out of attempts
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🙌 Acknowledgments
+- Original [Wordle](https://www.nytimes.com/games/wordle/index.html) game by Josh Wardle
+- Word list from [valid-wordle-words.txt](https://gist.github.com/dracos/dd0668f281e685bad51479e5acaadb93)
