@@ -30,11 +30,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     getThemeMode();
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: MyApp.themeNotifier.value == ThemeMode.dark
-          ? Colors.grey.shade900
-          : const Color.fromARGB(255, 247, 245, 249),
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: MyApp.themeNotifier.value == ThemeMode.dark
+            ? Colors.grey.shade900
+            : const Color.fromARGB(255, 247, 245, 249),
+      ),
+    );
 
     return ValueListenableBuilder(
       valueListenable: themeNotifier,
@@ -130,7 +132,7 @@ ThemeData darkTheme = ThemeData(
     titleSmall: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: Colors.teal,
+      color: Colors.green,
     ),
     titleLarge: TextStyle(
       fontSize: 25,

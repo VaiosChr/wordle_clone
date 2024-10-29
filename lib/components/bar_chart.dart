@@ -34,7 +34,6 @@ class MyBarChart extends StatelessWidget {
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               return BarTooltipItem(
                 '${distribution[group.x + 1] ?? 0}',
-                // '${totalGuesses[group.x.toInt()]}',
                 const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -55,9 +54,8 @@ class MyBarChart extends StatelessWidget {
 
   List<BarChartGroupData> _generateBarGroups() {
     return List.generate(7, (index) {
-      // index + 1 represents the guess number (1-6) and 7 represents fail
       int value =
-          index < 6 ? (distribution[index + 1] ?? 0) : (distribution[0] ?? 0);
+          index < 7 ? (distribution[index + 1] ?? 0) : (distribution[0] ?? 0);
       return BarChartGroupData(
         x: index,
         barRods: [

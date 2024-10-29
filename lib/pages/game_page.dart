@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wordle_clone/classes/statistics.dart';
 import 'package:wordle_clone/classes/word_letter.dart';
+import 'package:wordle_clone/components/alert_dialog.dart';
 import 'package:wordle_clone/components/countdown_clock.dart';
 import 'package:wordle_clone/classes/keyboard.dart';
 import 'package:wordle_clone/include/keys.dart';
@@ -48,7 +49,7 @@ class _GamePageState extends State<GamePage> {
     ),
   );
 
-  late Statistics _statistics;
+  Statistics _statistics = Statistics();
 
   @override
   void initState() {
@@ -151,6 +152,42 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  Future<void> _updateGameState() async {
+    await _saveGameState();
+    await Future.delayed(const Duration(seconds: 1));
+    await _saveGamePlayableState();
+  }
+
+  Future<void> _updateStatistics(bool won) async {
+    _statistics.addGame(won: won, numGuesses: _row + 1);
+    await _saveStatistics();
+
+    if (!mounted) return;
+    if (won) {
+      showDialog(
+        context: context,
+        builder: (context) => CustomDialog(
+          title: 'Congratulations!',
+          message: 'You won the game!',
+          streak: _statistics.currentStreak,
+          guesses: _row,
+          word: _wordToGuess,
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => CustomDialog(
+          title: 'Oops...',
+          message: 'You lost the game!',
+          streak: _statistics.currentStreak,
+          guesses: _row,
+          word: _wordToGuess,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,39 +240,46 @@ class _GamePageState extends State<GamePage> {
     }
   }
 
-  void onEnterPress() async {
+  void onEnterPress() {
     if (_currentGuess.length != 5) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please enter a 5-letter word."),
-        ),
-      );
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          const SnackBar(
+            content: Text("Please enter a 5-letter word."),
+          ),
+        );
       return;
     } else if (!words.contains(_currentGuess.toLowerCase())) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Not in word list."),
-        ),
-      );
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          const SnackBar(
+            content: Text("Not in word list."),
+          ),
+        );
       return;
     }
 
-    await checkGuess();
+    bool won = checkGuess();
+
+    if (won || _row == 5) {
+      _updateStatistics(won);
+    }
 
     setState(() {
-      _row++;
-      if (_row == 6) {
+      if (won || _row == 5) {
         _gamePlayable = false;
-        _saveGamePlayableState();
       }
+      _row++;
       _currentGuess = "";
       _col = 0;
-    });
 
-    _saveGameState();
+      _updateGameState();
+    });
   }
 
-  Future<void> checkGuess() async {
+  bool checkGuess() {
     List<List<int>> result = findMatchingIndices(_wordToGuess, _currentGuess);
     List<int> correctLetters = result[0];
     List<int> semiCorrectLetters = result[1];
@@ -243,30 +287,7 @@ class _GamePageState extends State<GamePage> {
     _words[_row].updateLetters(correctLetters, semiCorrectLetters);
     keyboard.updateKeyColors(correctLetters, semiCorrectLetters, _currentGuess);
 
-    bool won = _currentGuess == _wordToGuess;
-
-    if (won) {
-      _statistics.addGame(won: true, numGuesses: _row + 1);
-      await _saveStatistics();
-
-      _gamePlayable = false;
-      _saveGamePlayableState();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Congratulations! You guessed the word."),
-        ),
-      );
-    } else if (_row == 5) {
-      _statistics.addGame(won: false);
-      await _saveStatistics();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("You lost..."),
-        ),
-      );
-    }
+    return _currentGuess == _wordToGuess;
   }
 
   void onBackspacePress() {

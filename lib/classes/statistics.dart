@@ -13,7 +13,7 @@ class Statistics {
     this.maxStreak = 0,
     Map<int, int>? guessDistribution,
   }) : guessDistribution =
-            guessDistribution ?? {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0};
+            guessDistribution ?? {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0};
 
   void addGame({required bool won, int? numGuesses}) {
     totalGames++;
@@ -28,6 +28,7 @@ class Statistics {
       }
     } else {
       currentStreak = 0;
+      guessDistribution[7] = (guessDistribution[7] ?? 0) + 1;
     }
   }
 

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wordle_clone/classes/statistics.dart';
-import 'package:wordle_clone/include/bar_chart.dart';
+import 'package:wordle_clone/components/bar_chart.dart';
 import 'package:wordle_clone/components/countdown_clock.dart';
 
 class StatsPage extends StatefulWidget {
@@ -194,35 +194,84 @@ class _StatsPageState extends State<StatsPage> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              Text(
-                "GAME PERFORMANCE",
-                style: Theme.of(context).textTheme.headlineSmall,
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Theme.of(context).focusColor,
+                    width: 1.5,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      "GAME PERFORMANCE",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildGamePerformanceStats(),
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
-              _buildGamePerformanceStats(),
-              const SizedBox(height: 20),
-              _winGauge(),
-              const SizedBox(height: 20),
-              const Divider(),
-              const SizedBox(height: 20),
-              Text(
-                "GUESS DISTRIBUTION",
-                style: Theme.of(context).textTheme.headlineSmall,
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Theme.of(context).focusColor,
+                    width: 1.5,
+                  ),
+                ),
+                child: _winGauge(),
               ),
               const SizedBox(height: 20),
-              SizedBox(
-                height: 250,
-                child: _buildGuessDistribution(),
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Theme.of(context).focusColor,
+                    width: 1.5,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      "GUESS DISTRIBUTION",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 250,
+                      child: _buildGuessDistribution(),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
-              const Divider(),
-              const SizedBox(height: 20),
-              Text(
-                "NEXT WORDLE",
-                style: Theme.of(context).textTheme.headlineSmall,
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Theme.of(context).focusColor,
+                    width: 1.5,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      "NEXT WORDLE",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 20),
+                    const MidnightCountdown(),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
-              const MidnightCountdown(),
             ],
           ),
         ),
