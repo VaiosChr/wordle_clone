@@ -69,6 +69,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   Future<void> _saveGamePlayableState() async {
+    if (_gamePlayable) return;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('lastPlayedDate', dateToInt(DateTime.now()));
   }
