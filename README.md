@@ -11,7 +11,6 @@ A clone of the popular wordle game, made with Flutter. Test your vocabulary and 
 * Local statistics tracking
 
 ## 🎯 How to Play
-
 1. You have six attempts to guess the five-letter word
 2. Type your guess and press Enter
 3. After each guess, the tiles will change color
@@ -20,3 +19,15 @@ A clone of the popular wordle game, made with Flutter. Test your vocabulary and 
 ## 🙌 Acknowledgments
 - Original [Wordle](https://www.nytimes.com/games/wordle/index.html) game by Josh Wardle
 - Word list from [valid-wordle-words.txt](https://gist.github.com/dracos/dd0668f281e685bad51479e5acaadb93)
+
+## 📺 Screenshots
+<div style="display: flex; justify-content: space-between;">
+  <img src="https://raw.githubusercontent.com/VaiosChr/wordle_clone/master/assets/images/home_screen.png" width="30%" />
+  <img src="https://raw.githubusercontent.com/VaiosChr/wordle_clone/master/assets/images/play.png" width="30%" />
+  <img src="https://raw.githubusercontent.com/VaiosChr/wordle_clone/master/assets/images/play2.png" width="30%" />
+</div>
+<div style="display: flex; justify-content: space-between;">
+  <img src="https://raw.githubusercontent.com/VaiosChr/wordle_clone/master/assets/images/settings.png" width="30%" />
+  <img src="https://raw.githubusercontent.com/VaiosChr/wordle_clone/master/assets/images/stats.png" width="30%" />
+  <img src="https://raw.githubusercontent.com/VaiosChr/wordle_clone/master/assets/images/help.png" width="30%" />
+</div>
